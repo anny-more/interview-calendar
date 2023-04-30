@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {getWeek} from './modules/getWeek';
 import styled from 'styled-components';
-import { addSlot } from './modules/addSlot';
 import Form from './components/modal';
 import { timeSlots } from './modules/const';
+import { deleteSlot } from './modules/deleteSlot';
 
 const Wrapper = styled.div`
     margin: 0 auto;
@@ -60,15 +60,16 @@ const TimeSlot = styled.div<{bg : string}>`
 
 function App (): JSX.Element {
     const [dateInfo, setDate] = useState(getWeek.setWeek());
-    const [data, setData] = useState([{date_interview: ''}]);
+    const [slotsData, setData] = useState([{date_interview: ''}]);
     const [visible, setModal] = useState(false);
+    const [rerender, startRender] = useState(false);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api//allSlots')
+        fetch('http://localhost:3001/api/allSlots')
         .then(res => res.json())
-        .then(data => {setData(data); console.log('data', data)})
+        .then(data => setData(data))
         .catch(err => setData([]));
-    }, [dateInfo[0].item]);
+    }, [dateInfo[0].item, rerender, visible]);
 
     return (
         <Wrapper>
@@ -93,7 +94,7 @@ function App (): JSX.Element {
             </Calendar>
             <Calendar>
                 <button onClick={() => {setDate(getWeek.getDayBefore());}}>Prev</button>
-                <div>{dateInfo[0].month}  {dateInfo[0].year}</div>
+                <div>{dateInfo[0].month} {dateInfo[0].year}</div>
                 <button onClick={() => {setDate(getWeek.getDayAfter());}}>Next</button>
             </Calendar>
             </Header>
@@ -109,10 +110,16 @@ function App (): JSX.Element {
                     return (
                         <>
                             <Day key={item.toString()}>
-                               {timeSlots.map(() => {
+                               {timeSlots.map((hour) => {
+                                const key = item + ' ' + hour;
+                                let bg = slotsData.find(item => item.date_interview === key) ? 'SkyBlue' : 'white'
                                 return (
                                     <>
-                                    <TimeSlot bg='ScyBlue'></TimeSlot>
+                                    <TimeSlot key={key} bg={bg} onClick = {() => {
+                                        if (bg == 'SkyBlue') {
+                                            deleteSlot(key);
+                                            startRender(!rerender);
+                                        }}}></TimeSlot>
                                     </>
                                 )})}
                             </Day>
@@ -120,7 +127,6 @@ function App (): JSX.Element {
                     );
                 })}
             </Slots>
-            <Calendar></Calendar>
         </Wrapper>
     );
 }
