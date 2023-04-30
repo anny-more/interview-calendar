@@ -21,27 +21,51 @@ const ModalForm = styled.form`
     justify-content: space-around;
     padding: 20px;
 `;
+const Message = styled.div<{color: String}>`
+    height: 60px;
+    width: 100%;
+    color: ${props => props.color};
+    text-align: center;
+    margin-top: 15px;
+`; 
 export default function Form({visible, setVisible} : {visible: Boolean, setVisible: Function}) {
     const [newEvent, setNewEvent] = useState({date: '', time: ''});
     const [isDisabled, setStatus] = useState(true);
+    const [response, setResponse] = useState('');
+
+    type ResponseType = 'error' | 'ok' | '';
+    type MessageType = {[key in ResponseType]: String};
+    
+    const message: MessageType = {
+        'ok': 'Встреча добавлена!',
+        'error': 'Не удалось добавить встречу!',
+        '': ''
+    }
+ 
 
     const onSubmit = (event: { preventDefault: () => void; }) => {
-        console.log(newEvent);
-        const data = {date_interview: newEvent.date, slot: newEvent.time}
+        const data = {date_interview: newEvent.date, slot: newEvent.time};
+        setNewEvent({date: '', time: ''});
+
         fetch('http://localhost:3001/api/addSlot', {
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(data)
         })
-        .then((response) => console.log(response));
+        .then(res => res.json())
+        .then(data => setResponse('ok'))
+        .catch(() => setResponse('error'));
         event.preventDefault();
     }
     useEffect(() => {
         (newEvent.date && newEvent.time) ? setStatus(false) : setStatus(true);
+        setResponse('');
     }, [newEvent.date, newEvent.time] 
-    )
+    );
+  
     return (
             <Modal visible={visible}>
+                <Message color={(response === 'ok') ?'green' : 'red'}>{response  && message[response as ResponseType]}</Message>
                 <ModalForm onSubmit={onSubmit}>
                 <h5>Добавить встречу</h5>
                     <label>
@@ -63,7 +87,7 @@ export default function Form({visible, setVisible} : {visible: Boolean, setVisib
                     </label>
                     <br/>
                     
-                    <button onClick={() => setVisible(false)}>Отмена</button>
+                    <button onClick={() => {setResponse(''); setVisible(false) }}>Отмена</button>
                     <button disabled={isDisabled} type='submit'>Добавить</button>
                 </ModalForm>
             </Modal>

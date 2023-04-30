@@ -43,9 +43,9 @@ class SlotsController {
                 [`${date_interview} ${slot}`]
             );
             console.log(newSlot.rows[0]);
-            res.json({message: 'ok'});
+            res.status(200).json(newSlot.rows[0]);
         } catch (error) {
-            console.log(error);
+            throw new Error('error');
         }
     }
     async getAllSlots(req: Request, res: Response) {
