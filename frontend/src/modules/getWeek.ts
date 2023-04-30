@@ -23,9 +23,8 @@ class GetWeek {
             date: item.getDate(),
             month: this.months[item.getMonth()],
             year: item.getFullYear(),
-            item: `${item.getFullYear()}/${this.months[item.getMonth()]}/${this.days[item.getDay()]}`
+            item: `${item.getFullYear()}-${item.getMonth() < 9 ? '0' + (item.getMonth() + 1): (item.getMonth() + 1)}-${item.getDate()}`,
         }));
-        console.log(result);
         return result;
     }
     getDayBefore(): DateInfo[] {
