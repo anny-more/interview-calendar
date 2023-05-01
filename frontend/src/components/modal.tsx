@@ -41,7 +41,6 @@ export default function Form({visible, setVisible} : {visible: Boolean, setVisib
         'error': 'Не удалось добавить встречу!',
         '': ''
     }
- 
 
     const onSubmit = (event: { preventDefault: () => void; }) => {
         const data = {date_interview: newEvent.date, slot: newEvent.time};

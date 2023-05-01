@@ -5,7 +5,7 @@ const router: Router = Router();
 
 router.get('/allSlots', SlotsController.getAllSlots);
 router.get('/getSlot/:id', SlotsController.getSlot);
-router.post('/addSlot/', SlotsController.createSlot);
-router.delete('/deleteSlot/:id', SlotsController.deleteSlot);
+router.post('/addSlot', SlotsController.createSlot);
+router.delete('/deleteSlot', SlotsController.deleteSlot);
 
 export default router;

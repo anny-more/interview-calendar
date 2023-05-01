@@ -1,0 +1,1 @@
+SPA for view, add and delete time slots at picked day and time
