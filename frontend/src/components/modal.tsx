@@ -52,7 +52,7 @@ export default function Form({visible, setVisible} : {visible: Boolean, setVisib
             body: JSON.stringify(data)
         })
         .then(res => res.json())
-        .then(data => {(data === 'error') ? setResponse('error') : setResponse('ok')})
+        .then(data => setResponse('ok'))
         .catch(() => setResponse('error'));
         event.preventDefault();
     }

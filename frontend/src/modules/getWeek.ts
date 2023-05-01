@@ -23,7 +23,7 @@ class GetWeek {
             date: item.getDate(),
             month: this.months[item.getMonth()],
             year: item.getFullYear(),
-            item: `${item.getFullYear()}-${item.getMonth() < 9 ? '0' + (item.getMonth() + 1): (item.getMonth() + 1)}-${item.getDate()}`,
+            item: `${item.getFullYear()}-${item.getMonth() < 9 ? '0' + (item.getMonth() + 1): (item.getMonth() + 1)}-${item.getDate() < 9 ? '0' + item.getDate() : item.getDate()}`,
         }));
         return result;
     }
