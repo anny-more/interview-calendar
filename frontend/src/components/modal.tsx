@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { timeSlots } from "../modules/const";
+import { timeSlots, URL } from "../modules/const";
 
 const Modal = styled.div<{visible: Boolean}>`
     visibility: ${props => props.visible ? 'visible' : 'hidden'};
@@ -46,7 +46,7 @@ export default function Form({visible, setVisible} : {visible: Boolean, setVisib
         const data = {date_interview: newEvent.date, slot: newEvent.time};
         setNewEvent({date: '', time: ''});
 
-        fetch('http://localhost:3001/api/addSlot', {
+        fetch(URL + '/api/addSlot', {
             method: 'post',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(data)

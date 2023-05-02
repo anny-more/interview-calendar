@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Form from './components/modal';
 import { timeSlots } from './modules/const';
 import { deleteSlot } from './modules/deleteSlot';
+import { URL } from './modules/const';
 
 const Wrapper = styled.div`
     margin: 0 auto;
@@ -65,8 +66,7 @@ function App (): JSX.Element {
     const [rerender, startRender] = useState(false);
 
     useEffect(() => {
-        console.log('data', slotsData);
-        fetch('http://localhost:3001/api/allSlots')
+        fetch(URL + '/api/allSlots')
         .then(res => res.json())
         .then(data => setData(data))
         .catch(err => setData([{date_interview: ''}]));
