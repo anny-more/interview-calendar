@@ -65,10 +65,11 @@ function App (): JSX.Element {
     const [rerender, startRender] = useState(false);
 
     useEffect(() => {
+        console.log('data', slotsData);
         fetch('http://localhost:3001/api/allSlots')
         .then(res => res.json())
         .then(data => setData(data))
-        .catch(err => setData([]));
+        .catch(err => setData([{date_interview: ''}]));
     }, [dateInfo[0].item, rerender, visible]);
 
     return (
@@ -112,7 +113,7 @@ function App (): JSX.Element {
                             <Day key={item.toString()}>
                                {timeSlots.map((hour) => {
                                 const key = item + ' ' + hour;
-                                let bg = slotsData.find(item => item.date_interview === key) ? 'SkyBlue' : 'white'
+                                const bg = slotsData.find(item => item.date_interview === key) ? 'SkyBlue' : 'white'
                                 return (
                                     <>
                                     <TimeSlot key={key} bg={bg} onClick = {() => {

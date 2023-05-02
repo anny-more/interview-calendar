@@ -1,4 +1,4 @@
 create TABLE slots(
-    date_interview VARCHAR(255) UNIQUE,
-    visavi VARCHAR(255)
+    date_interview VARCHAR(255) NOT NULL UNIQUE,
+    visavis VARCHAR(255)
 )
